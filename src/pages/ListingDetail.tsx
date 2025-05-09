@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -7,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Star, MapPin, User } from 'lucide-react';
+import { Star, MapPin, User, CreditCard, WalletCards } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { formatPriceInINR } from '@/utils/currency';
 import {
@@ -17,6 +18,17 @@ import {
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from 'sonner';
 
 const ListingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +36,10 @@ const ListingDetail: React.FC = () => {
   const [checkInDate, setCheckInDate] = useState<Date>();
   const [checkOutDate, setCheckOutDate] = useState<Date>();
   const [guests, setGuests] = useState<number>(1);
+  const [paymentMethod, setPaymentMethod] = useState<string>("credit-card");
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
   
   if (!listing) {
     return <Navigate to="/listings" />;
@@ -40,6 +55,15 @@ const ListingDetail: React.FC = () => {
   const totalPrice = (listing.price * nights) + cleaningFee + serviceFee;
   
   const handleBooking = () => {
+    if (!user) {
+      toast({
+        title: "Login required",
+        description: "Please login to book this listing.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!checkInDate || !checkOutDate) {
       toast({
         title: "Please select dates",
@@ -48,12 +72,14 @@ const ListingDetail: React.FC = () => {
       });
       return;
     }
+
+    setIsProcessingPayment(true);
     
-    // In a real app, this would submit the booking data to the backend
-    toast({
-      title: "Booking successful!",
-      description: `Your stay at ${listing.title} has been booked.`,
-    });
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      toast.success("Payment successful! Your booking has been confirmed.");
+    }, 2000);
   };
 
   return (
@@ -219,12 +245,34 @@ const ListingDetail: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Payment Method Selection */}
+              <div className="mb-4">
+                <h4 className="font-medium mb-2">Payment Method</h4>
+                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-2">
+                  <div className="flex items-center space-x-2 border rounded-md p-3">
+                    <RadioGroupItem value="credit-card" id="credit-card" />
+                    <Label htmlFor="credit-card" className="flex items-center">
+                      <CreditCard className="mr-2 h-5 w-5" />
+                      <span>Credit/Debit Card</span>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 border rounded-md p-3">
+                    <RadioGroupItem value="upi" id="upi" />
+                    <Label htmlFor="upi" className="flex items-center">
+                      <WalletCards className="mr-2 h-5 w-5" />
+                      <span>UPI Payment</span>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
               
               <Button 
                 className="w-full bg-airbnb-primary hover:bg-airbnb-secondary mb-4"
                 onClick={handleBooking}
+                disabled={isProcessingPayment}
               >
-                Book Now
+                {isProcessingPayment ? 'Processing Payment...' : `Pay ${formatPriceInINR(totalPrice)}`}
               </Button>
               
               <div className="text-sm text-gray-500 mb-4 text-center">You won't be charged yet</div>
