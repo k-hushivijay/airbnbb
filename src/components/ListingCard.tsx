@@ -3,6 +3,7 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import { Listing } from '@/data/listings';
 import { Link } from 'react-router-dom';
+import { formatPriceInINR } from '@/utils/currency';
 
 interface ListingCardProps {
   listing: Listing;
@@ -31,7 +32,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing }) => {
           <p className="text-gray-600 text-sm line-clamp-2 mb-2">{listing.description}</p>
           <div className="flex items-center justify-between">
             <p className="font-semibold">
-              <span className="text-lg">${listing.price}</span>
+              <span className="text-lg">{formatPriceInINR(listing.price)}</span>
               <span className="text-sm text-gray-500"> / night</span>
             </p>
           </div>

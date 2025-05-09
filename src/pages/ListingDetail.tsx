@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Star, MapPin, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { formatPriceInINR } from '@/utils/currency';
 import {
   Popover,
   PopoverContent,
@@ -139,7 +140,7 @@ const ListingDetail: React.FC = () => {
             <div className="bg-white p-6 border rounded-xl shadow-sm sticky top-24">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold">
-                  <span className="text-2xl">${listing.price}</span>
+                  <span className="text-2xl">{formatPriceInINR(listing.price)}</span>
                   <span className="text-gray-600"> / night</span>
                 </h3>
                 <div className="flex items-center">
@@ -231,20 +232,20 @@ const ListingDetail: React.FC = () => {
               
               <div className="space-y-2 pt-4 border-t">
                 <div className="flex justify-between">
-                  <span>${listing.price} x {nights} {nights === 1 ? 'night' : 'nights'}</span>
-                  <span>${listing.price * nights}</span>
+                  <span>{formatPriceInINR(listing.price)} x {nights} {nights === 1 ? 'night' : 'nights'}</span>
+                  <span>{formatPriceInINR(listing.price * nights)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Cleaning fee</span>
-                  <span>${cleaningFee}</span>
+                  <span>{formatPriceInINR(cleaningFee)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Service fee</span>
-                  <span>${serviceFee}</span>
+                  <span>{formatPriceInINR(serviceFee)}</span>
                 </div>
                 <div className="flex justify-between font-semibold pt-3 border-t">
                   <span>Total</span>
-                  <span>${totalPrice}</span>
+                  <span>{formatPriceInINR(totalPrice)}</span>
                 </div>
               </div>
             </div>
