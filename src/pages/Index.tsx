@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import FeaturedListings from '@/components/FeaturedListings';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 
 const Index: React.FC = () => {
   return (
