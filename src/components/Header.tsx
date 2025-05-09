@@ -13,7 +13,7 @@ const Header: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-bold text-xl text-airbnb-primary">
           <Home className="h-6 w-6" />
-          <span>StayScape</span>
+          <span>Airbnb</span>
         </Link>
 
         {/* Navigation for desktop */}

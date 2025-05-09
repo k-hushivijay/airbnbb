@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
         
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-500 mb-4 md:mb-0">
-            © 2025 StayScape, Inc. All rights reserved.
+            © 2025 Airbnb, Inc. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <Link to="#" className="text-gray-500 hover:text-airbnb-primary">
